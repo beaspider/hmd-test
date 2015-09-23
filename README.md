@@ -24,4 +24,24 @@ A working Go environment
 
 `go run main.go`
 
-## TODO: database, front end
+## Looking at `Work In Progress` with DynamoDB
+
+### Linux/Mac
+`export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>`
+
+`export AWS_SECRET_KEY=<AWS_SECRET_KEY>`
+
+`cd $GOPATH/src/github.com/beaspider/hmd-test`
+
+`go test -v`
+
+### Windows
+`set AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>`
+
+`set AWS_SECRET_KEY=<AWS_SECRET_KEY>`
+
+`cd $GOPATH%/src/github.com/beaspider/hmd-test`
+
+`go test -v`
+
+
