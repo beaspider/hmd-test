@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/beaspider/hmd-test/database"
+
 	"github.com/gedex/go-instagram/instagram"
 )
 
@@ -17,6 +19,7 @@ const (
 
 var (
 	client *instagram.Client
+	db     database.InstagramMediaDB
 )
 
 func init() {
@@ -26,6 +29,8 @@ func init() {
 	}
 	client = instagram.NewClient(nil)
 	client.AccessToken = iat
+	// TODO switch to InstagramMediaDynamoDB
+	db = database.InstagramMediaDB(database.InstagramMediaInMemoryDB{})
 }
 
 func fetchRecentMedia(rp *instagram.ResponsePagination) ([]instagram.Media, *instagram.ResponsePagination, error) {
@@ -60,8 +65,16 @@ func addRecentMedia() error {
 			if m.Type == "image" {
 				// check for secondary filter tag
 				if filterTag == "" || filterTags(filterTag, m.Tags) {
-					log.Println("TODO Add this media to a database:", m)
-					// TODO if we have already added this media return
+					// Add media to database
+					exists, err := db.Add(m)
+					if err != nil {
+						return err
+					}
+					// if we have already added this media return, we have hit the start of our image capture
+					if exists {
+						return nil
+					}
+
 				}
 			}
 		}
@@ -71,9 +84,17 @@ func addRecentMedia() error {
 }
 
 func main() {
+	log.Println("Adding recent media...")
 	err := addRecentMedia()
 	if err != nil {
-		log.Println("Error:", err)
+		log.Println("Error adding recent media:", err)
+	}
+	log.Println("Retrieving results from database...")
+	results, err := db.List()
+	if err != nil {
+		log.Println("Error retrieving results from database:", err)
+	} else {
+		log.Println("Success :) results: ", results)
 	}
 	fmt.Printf("Done scouring instagram for `%v %v` images\n", searchTag, filterTag)
 }
