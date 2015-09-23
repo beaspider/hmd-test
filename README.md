@@ -6,7 +6,7 @@ A working Go environment
 
 ## Running the code
 
-## Linux/Mac
+### Linux/Mac
 `export INSTAGRAM_ACCESS_TOKEN=<OAUTH_TOKEN>`
 
 `go get github.com/beaspider/hmd-test`
@@ -15,7 +15,7 @@ A working Go environment
 
 `go run main.go`
 
-## Windows
+### Windows
 `set INSTAGRAM_ACCESS_TOKEN=<OAUTH_TOKEN>`
 
 `go get github.com/beaspider/hmd-test`
@@ -23,3 +23,5 @@ A working Go environment
 `cd $GOPATH%/src/github.com/beaspider/hmd-test`
 
 `go run main.go`
+
+## TODO: database, front end
